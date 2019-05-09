@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">KALKULATOR</string>
+    <string name="Simple">Simple </string>
+    <string name="Advanced">Advanced </string>
+    <string name="About">About </string>
+    <string name="Exit">Exit </string>
+    <string name="button0">0</string>
+    <string name="button1">1</string>
+    <string name="button2">2</string>
+    <string name="button3">3</string>
+    <string name="button4">4</string>
+    <string name="button5">5</string>
+    <string name="button6">6</string>
+    <string name="button7">7</string>
+    <string name="button8">8</string>
+    <string name="button9">9</string>
+    <string name="buttonSinus">SIN</string>
+    <string name="buttonSQRT">SQRT</string>
+    <string name="buttonCosinus">COS</string>
+    <string name="buttonKwadrat">X^2</string>
+    <string name="buttonTangens">TAN</string>
+    <string name="buttonPotega">X^Y</string>
+    <string name="buttonLogNat">LN</string>
+    <string name="buttonLog">LOG^2</string>
+    <string name="buttonBksp">Bksp</string>
+    <string name="buttonC">C</string>
+    <string name="buttonZnak">±</string>
+    <string name="buttonDzielenie">/</string>
+    <string name="buttonMnozenie">*</string>
+    <string name="buttonDodawanie">+</string>
+    <string name="buttonOdejmowanie">-</string>
+    <string name="buttonRowna">=</string>
+    <string name="buttonKropka">.</string>
+    <string name="author">Author: Magdalena Klimaszewska</string>
+    <string name="aplication">Application made as project for "Technologie mobilne" class</string>
+
+</resources>

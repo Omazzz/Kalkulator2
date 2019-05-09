@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="turquoise">#008577</color>
+    <color name="turquoiseDark">#00574B</color>
+    <color name="Black">#000000</color>
+    <color name="Grey">#c4c4c4c4</color>
+    <color name="cyanic">#b6d8d5</color>
+
+    <color name="colorPrimary">#FFFF</color>
+    <color name="colorPrimaryDark">#DB9234</color>
+    <color name="colorAccent">#F3A23A</color>
+</resources>
