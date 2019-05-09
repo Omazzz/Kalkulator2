@@ -1,6 +1,5 @@
 package com.example.kalkulator;
 
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,27 +9,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Advanced extends AppCompatActivity {
-    TextView operationMemoryTextView;
-    TextView resultTextView;
+    TextView screen;
     StringBuilder resultMemory = new StringBuilder();
     StringBuilder operationMemory = new StringBuilder();
 
     private boolean isSign(String sign) {
-        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/") || sign.equals("^")) {
+        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/") || sign.contains("^")) {
             return true;
         }
         return false;
     }
 
     private boolean isNumber(String number) {
-        if (number.matches("\\d")) {
+        if (number.equals("0")||number.equals("1")||number.equals("2")||number.equals("3")||number.equals("4")||number.equals("5")||number.equals("6")||number.equals("7")||number.equals("8")||number.equals("9")) {
             return true;
         }
         return false;
     }
 
     private boolean isOperation(String sign){
-        if(sign.equals("x^2") || sign.equals("sqrt") || sign.equals("sin") || sign.equals("cos") || sign.equals("tan") || sign.equals("log") || sign.equals("ln") || sign.equals("%")){
+        if(sign.equals("SIN") || sign.equals("SQRT") || sign.equals("SIN") || sign.equals("COS") || sign.equals("TAN") || sign.equals("LOG") || sign.equals("LN")){
             return true;
         }
         return false;
@@ -205,7 +203,7 @@ public class Advanced extends AppCompatActivity {
         computeResult();
         clearResultMemory();
         if (rej1.length() == 0 && rej2.length() == 0) {
-            resultTextView.setText("");
+            screen.setText("");
         } else {
             updateResultTextViewWithResult();
         }
@@ -219,7 +217,7 @@ public class Advanced extends AppCompatActivity {
         computeResult();
         clearResultMemory();
         clearRegisters(view);
-        resultTextView.setText("");
+        screen.setText("");
     }
 
     public void plusMinusClicked(View view) {
@@ -583,25 +581,25 @@ public class Advanced extends AppCompatActivity {
 
         switch (pressedButtonText){
 
-            case "x^2":
+            case "X^2":
                 powerToTwo();
                 break;
-            case "sqrt":
+            case "SQRT":
                 computeSqrt();
                 break;
-            case "sin":
+            case "SIN":
                 computeSin();
                 break;
-            case "cos":
+            case "COS":
                 computeCos();
                 break;
-            case "tan":
+            case "TAN":
                 computeCTan();
                 break;
-            case "log":
+            case "LOG":
                 computeLog();
                 break;
-            case "ln":
+            case "LN":
                 computeLn();
                 break;
             default:
@@ -615,9 +613,9 @@ public class Advanced extends AppCompatActivity {
 
     public void pressButton(View view) {
         Button pressedButton = (Button) view;
-        Log.i("Button pressed:", pressedButton.getTag().toString());
+        Log.i("Button pressed:", pressedButton.toString());
         String pressedButtonTag = "";
-        pressedButtonTag = pressedButton.getTag().toString();
+        pressedButtonTag = pressedButton.getText().toString();
 
         if (isNumber(pressedButtonTag)) {
 
@@ -700,17 +698,17 @@ public class Advanced extends AppCompatActivity {
 
     private void updateMemoryTextView() {
         if (operationMemory.length() < 22) {
-            operationMemoryTextView.setText(operationMemory);
+            screen.setText((operationMemory.toString()+resultMemory));
         } else {
-            operationMemoryTextView.setText(operationMemory.substring(operationMemory.length() - 22));
+            screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
     }
 
     private void updateMemoryTextView(String operationMemory) {
         if (operationMemory.length() < 22) {
-            operationMemoryTextView.setText(operationMemory);
+            screen.setText((operationMemory.toString()+resultMemory));
         } else {
-            operationMemoryTextView.setText(operationMemory.substring(operationMemory.length() - 22));
+            screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
     }
 
@@ -732,9 +730,9 @@ public class Advanced extends AppCompatActivity {
             }
         } finally {
             if (mainResultSting.length() < 11) {
-                resultTextView.setText(mainResultSting);
+                screen.setText(mainResultSting);
             } else {
-                resultTextView.setText(mainResultSting.substring(mainResultSting.length() - 11));
+                screen.setText(mainResultSting.substring(mainResultSting.length() - 11));
             }
         }
 
@@ -742,44 +740,28 @@ public class Advanced extends AppCompatActivity {
 
     private void updateResultTextView() {
         if (resultMemory.length() < 11) {
-            resultTextView.setText(resultMemory);
+            screen.setText(resultMemory);
         } else {
-            resultTextView.setText(resultMemory.substring(0,12));
+            screen.setText(resultMemory.substring(0,12));
         }
     }
 
     private void updateResultTextView(String resultMemory) {
         if (resultMemory.length() < 11) {
-            resultTextView.setText(resultMemory);
+            screen.setText(resultMemory);
         } else {
-            resultTextView.setText(resultMemory.substring(resultMemory.length() - 11));
+            screen.setText(resultMemory.substring(resultMemory.length() - 11));
         }
     }
 
     int clickCounter = 0;
 
-    public void doubleClick(View view) {
+    public void CClick(View view) {
 
-        clickCounter++;
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (clickCounter == 1) {
                     if (resultMemory.length() > 0) {
                         resultMemory = resultMemory.delete(resultMemory.length() - 1, resultMemory.length());
                         updateResultTextView();
                     }
-                } else if (clickCounter == 2) {
-                    resultMemory = resultMemory.delete(0, resultMemory.length());
-                    updateResultTextView();
-                }
-                clickCounter = 0;
-            }
-        }, 500);
-
-
     }
 
 
@@ -788,7 +770,7 @@ public class Advanced extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advanced);
 
-        resultTextView = findViewById(R.id.screen);
+        screen = findViewById(R.id.screen);
     }
 
     @Override

@@ -60,7 +60,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonSinus"
-        android:onClick="functionClicked"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_cos"
         style="@style/Button"
@@ -69,7 +69,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonCosinus"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_tan"
         style="@style/Button"
@@ -78,7 +78,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonTangens"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_ln"
         style="@style/Button"
@@ -87,7 +87,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonLogNat"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <!---->
     <Button
         android:id="@+id/btn_operation_sqrt"
@@ -97,7 +97,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonSQRT"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_power_two"
         style="@style/Button"
@@ -106,7 +106,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonKwadrat"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_power_y"
         style="@style/Button"
@@ -115,7 +115,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonPotega"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_log"
         style="@style/Button"
@@ -124,7 +124,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonLog"
-        android:onClick="buttonPress" />
+        android:onClick="pressButton" />
     <!---->
     <Button
         android:id="@+id/btn_number_7"
@@ -134,7 +134,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button7"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_8"
         style="@style/Button"
@@ -143,7 +143,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button8"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_9"
         style="@style/Button"
@@ -152,7 +152,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button9"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_divide"
         style="@style/Button"
@@ -161,7 +161,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonDzielenie"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <!---->
     <Button
         android:id="@+id/btn_number_4"
@@ -171,7 +171,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button4"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_5"
         style="@style/Button"
@@ -180,7 +180,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button5"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_6"
         style="@style/Button"
@@ -189,7 +189,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button6"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_multiply"
         style="@style/Button"
@@ -198,7 +198,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonMnozenie"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <!---->
     <Button
         android:id="@+id/btn_number_1"
@@ -208,7 +208,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button1"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_2"
         style="@style/Button"
@@ -217,7 +217,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button2"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_number_3"
         style="@style/Button"
@@ -226,7 +226,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button3"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_minus"
         style="@style/Button"
@@ -235,7 +235,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonOdejmowanie"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <!---->
     <Button
         android:id="@+id/btn_number_0"
@@ -245,7 +245,7 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/button0"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_dot"
         style="@style/Button"
@@ -272,5 +272,5 @@
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
         android:text="@string/buttonDodawanie"
-        android:onClick="buttonPress"/>
+        android:onClick="pressButton"/>
 </GridLayout>

@@ -31,7 +31,7 @@ public class Simple extends AppCompatActivity {
     }
 
     private boolean isNumber(String number) {
-        if (number.equals("1")||number.equals("2")||number.equals("3")||number.equals("4")||number.equals("5")||number.equals("6")||number.equals("7")||number.equals("8")||number.equals("9")) {
+        if (number.equals("0")||number.equals("1")||number.equals("2")||number.equals("3")||number.equals("4")||number.equals("5")||number.equals("6")||number.equals("7")||number.equals("8")||number.equals("9")) {
             return true;
         }else {
             return false;
