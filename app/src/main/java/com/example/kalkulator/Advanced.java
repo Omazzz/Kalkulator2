@@ -1,5 +1,6 @@
 package com.example.kalkulator;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,46 +9,39 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.StringJoiner;
-
 public class Advanced extends AppCompatActivity {
-    TextView screen;
-    String resultMemory = new String();
-    String operationMemory = new String();
-    String operationMemoryTextView = "";
-    String rej1 = "";
-    String rejtemp="";
-    String rej2 = "";
-    String operator = "";
-    Double mainResult = 0.0;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advanced);
-        screen = findViewById(R.id.screen);
-    }
+    TextView operationMemoryTextView;
+    TextView resultTextView;
+    StringBuilder resultMemory = new StringBuilder();
+    StringBuilder operationMemory = new StringBuilder();
 
     private boolean isSign(String sign) {
-        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/")) {
+        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/") || sign.equals("^")) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     private boolean isNumber(String number) {
-        if (number.equals("0") || number.equals("1") || number.equals("2") || number.equals("3") || number.equals("4") || number.equals("5") || number.equals("6") || number.equals("7") || number.equals("8") || number.equals("9")) {
+        if (number.matches("\\d")) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    /////////seterry
-    public void setOperator(String s) {
+    private boolean isOperation(String sign){
+        if(sign.equals("x^2") || sign.equals("sqrt") || sign.equals("sin") || sign.equals("cos") || sign.equals("tan") || sign.equals("log") || sign.equals("ln") || sign.equals("%")){
+            return true;
+        }
+        return false;
+    }
 
-        operator = s;
+    String rej1 = "";
+    String rej2 = "";
+    String operator = "";
+
+    public void setOperator(String sign) {
+        operator = sign;
     }
 
     public void setRegisters() {
@@ -62,6 +56,7 @@ public class Advanced extends AppCompatActivity {
         Log.i("rej2", rej2);
     }
 
+    private Double mainResult = 0.0;
 
     public Double addition() {
         try {
@@ -69,7 +64,6 @@ public class Advanced extends AppCompatActivity {
             Double result = 0.0;
             result = Double.parseDouble(rej1) + Double.parseDouble(rej2);
             rej1 = result.toString();
-            rejtemp=rej1+" "+"+";
             return result;
 
         } catch (Exception e) {
@@ -85,7 +79,6 @@ public class Advanced extends AppCompatActivity {
             Double result = 0.0;
             result = Double.parseDouble(rej1) - Double.parseDouble(rej2);
             rej1 = result.toString();
-            rejtemp=rej1+" "+"-";
             return result;
 
         } catch (Exception e) {
@@ -101,7 +94,6 @@ public class Advanced extends AppCompatActivity {
             Double result = 0.0;
             result = Double.parseDouble(rej1) * Double.parseDouble(rej2);
             rej1 = result.toString();
-            rejtemp=rej1+" "+"*";
             return result;
 
         } catch (Exception e) {
@@ -124,7 +116,6 @@ public class Advanced extends AppCompatActivity {
             }
 
             rej1 = result.toString();
-            rejtemp=rej1+" "+"/";
 
             return result;
 
@@ -132,6 +123,28 @@ public class Advanced extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+
+    }
+
+    public Double power() {
+        try {
+
+            Double result = 0.0;
+
+
+            result = Math.pow(Double.parseDouble(rej1),Double.parseDouble(rej2));
+            rej1 = result.toString();
+            Toast.makeText(Advanced.this,result.toString(),Toast.LENGTH_LONG).show();
+            Log.i("POWER rej1",rej1);
+            Log.i("POWER rej2",rej2);
+            Log.i("POWER result",result.toString());
+            return result;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     public void computeResult() {
@@ -155,20 +168,24 @@ public class Advanced extends AppCompatActivity {
                     mainResult = division();
                     Log.i("main result", mainResult.toString());
                     break;
+                case "^":
+                    mainResult = power();
+                    Log.i("main result", mainResult.toString());
+                    break;
                 default:
                     Log.i("ERROR", "NO SUCH OPERATION");
             }
         }
+
     }
 
-    //////////clear
     public void clearOperationMemory() {
-        operationMemory = "";
+        operationMemory.delete(0, operationMemory.length());
         updateMemoryTextView();
     }
 
     public void clearResultMemory() {
-        resultMemory = "";
+        resultMemory.delete(0, resultMemory.length());
         updateResultTextView();
     }
 
@@ -179,60 +196,16 @@ public class Advanced extends AppCompatActivity {
         operator = "";
     }
 
-    private void updateResultTextViewWithResult() {
-
-        String mainResultSting = "";
-
-        try {
-            Integer mainResultInteger = Integer.parseInt(mainResult.toString());
-            mainResultSting = mainResultInteger.toString();
-        } catch (Exception e) {
-            Log.i("ERROR", "I CAN'T PARSE TO INT");
-            mainResultSting = mainResult.toString();
-            if (mainResultSting.length() > 11) {
-                mainResultSting = mainResultSting.substring(0, 11);
-            }
-        } finally {
-            if (mainResultSting.length() < 11) {
-                screen.setText(mainResultSting);
-            } else {
-                screen.setText(mainResultSting.substring(mainResultSting.length() - 11));
-            }
-        }
-
-    }
-
-    private void updateResultTextView() {
-        if (resultMemory.length() < 11) {
-            if(operationMemory!=null) {
-                screen.setText((resultMemory + " " + operator));
-            } else {
-                screen.setText(resultMemory + " " + operator);
-            }
-        } else {
-            screen.setText(resultMemory.substring(resultMemory.length() - 11));
-        }
-    }
-
-    private void updateResultTextView(String resultMemory) {
-        if (resultMemory.length() < 11) {
-            if(operationMemory!=null) {
-                screen.setText((resultMemory));
-            } else {
-                screen.setText(resultMemory);
-            }
-        } else {
-            screen.setText(resultMemory.substring(resultMemory.length() - 11));
-        }
-    }
-
     public void equalsClicked(View view) {
         clearOperationMemory();
         setRegisters();
+        operationMemoryToClear = 0;
+        isOperationLast = false;
+        updateAfterOperation = true;
         computeResult();
         clearResultMemory();
         if (rej1.length() == 0 && rej2.length() == 0) {
-            screen.setText("");
+            resultTextView.setText("");
         } else {
             updateResultTextViewWithResult();
         }
@@ -246,91 +219,459 @@ public class Advanced extends AppCompatActivity {
         computeResult();
         clearResultMemory();
         clearRegisters(view);
-        screen.setText("");
+        resultTextView.setText("");
     }
-
 
     public void plusMinusClicked(View view) {
 
         if (resultMemory.length() != 0) {
             if (resultMemory.charAt(0) == '-') {
-                int leng= resultMemory.length();
-                resultMemory.substring(1, leng); /////////////////todo
+                resultMemory.delete(0, 1);
             } else {
-                String tempResultMemory = resultMemory;
-                Toast.makeText(Advanced.this, tempResultMemory, Toast.LENGTH_LONG).show();
-                resultMemory = "";
-                String temp= resultMemory+"-"+tempResultMemory;
-                operationMemory=temp;
-                Log.i("result memory after", resultMemory);
+                String tempResultMemory = resultMemory.toString();
+                Toast.makeText(Advanced.this, tempResultMemory.toString(), Toast.LENGTH_LONG).show();
+                resultMemory.delete(0, resultMemory.length());
+                resultMemory.append("-").append(tempResultMemory);
+                Log.i("result memory after", resultMemory.toString());
             }
         }
 
         updateResultTextView();
 
     }
-
-    String tempMemory = "";
 
     public void dotClicked(View view) {
 
         if (resultMemory.length() == 0) {
-            String temp= resultMemory+"0"+".";
-            resultMemory=temp;
+            resultMemory.append("0").append(".");
         } else if (!(resultMemory.charAt(resultMemory.length() - 1) == '.')) {
-            String temp= resultMemory+".";
-            resultMemory=temp;
-
+            resultMemory.append(".");
         }
 
         updateResultTextView();
 
     }
-    public void buttonPress(View view) {
-        Log.i("abc " ,"abc");
-        Log.i("result memory:", resultMemory);
+
+    int operationMemoryToClear = 0;
+    Double resultOfOperation = 0.0;
+
+    public void powerToTwo(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = Math.pow(temp,2);
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        operationMemory.append(" ").append("sqr(").append(temp.toString()).append(")").append(" ");
+        operationMemoryToClear = 7+String.valueOf(temp).length();
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeSqrt(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = Math.sqrt(temp);
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        operationMemory.append(" ").append("sqrt(").append(temp.toString()).append(")").append(" ");
+        operationMemoryToClear = 8+String.valueOf(temp).length();
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeSin(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = Math.sin(Math.toRadians(temp));
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        operationMemory.append(" ").append("sin(").append(temp.toString()).append(")").append(" ");
+        operationMemoryToClear = 7+String.valueOf(temp).length();
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeCos(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = Math.cos(Math.toRadians(temp));
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        operationMemory.append(" ").append("cos(").append(temp.toString()).append(")").append(" ");
+        operationMemoryToClear = 7+String.valueOf(temp).length();
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeCTan(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = Math.tan(Math.toRadians(temp));
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        operationMemory.append(" ").append("tan(").append(temp.toString()).append(")").append(" ");
+        operationMemoryToClear = 7+String.valueOf(temp).length();
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeLog(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = 0.0;
+        Boolean noError = true;
+
+        if(temp == 0.0){
+            Toast.makeText(Advanced.this,"Zakazane dzialanie (Log(0))",Toast.LENGTH_LONG).show();
+            noError = false;
+        } else{
+            result = Math.log10(temp);
+        }
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        if(noError){
+            operationMemory.append(" ").append("ln(").append(temp.toString()).append(")").append(" ");
+            operationMemoryToClear = 6+String.valueOf(temp).length();
+        }
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+    public void computeLn(){
+
+        Double temp = 0.0;
+
+        Log.i("rej1", rej1);
+        Log.i("rej2",rej2);
+
+        if(resultMemory.length() == 0){
+            temp = 0.0;
+        } else {
+            temp = Double.valueOf(resultMemory.toString());
+        }
+
+        Log.i("temp",temp.toString());
+
+        Double result = 0.0;
+        Boolean noError = true;
+
+        if(temp == 0.0){
+            Toast.makeText(Advanced.this,"Zakazane dzialanie (Ln(0))",Toast.LENGTH_LONG).show();
+            noError = false;
+        } else{
+            result = Math.log10(temp);
+        }
+
+        Log.i("result",result.toString());
+        if(rej1.length() == 0){
+            rej1 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej1);
+        } else {
+            rej2 = result.toString();
+            resultMemory.delete(0,resultMemory.length());
+            resultMemory.append(rej2);
+        }
+
+        if(noError){
+            operationMemory.append(" ").append("ln(").append(temp.toString()).append(")").append(" ");
+            operationMemoryToClear = 6+String.valueOf(temp).length();
+        }
+
+        resultOfOperation = result;
+        mainResult = result;
+
+        Log.i("af rej1", rej1);
+        Log.i("af rej2",rej2);
+
+        updateAfterOperation = false;
+
+        updateResultTextView();
+
+    }
+
+
+    boolean updateAfterOperation = true;
+
+    public void functionClicked(String pressedButtonText) {
+
+        switch (pressedButtonText){
+
+            case "x^2":
+                powerToTwo();
+                break;
+            case "sqrt":
+                computeSqrt();
+                break;
+            case "sin":
+                computeSin();
+                break;
+            case "cos":
+                computeCos();
+                break;
+            case "tan":
+                computeCTan();
+                break;
+            case "log":
+                computeLog();
+                break;
+            case "ln":
+                computeLn();
+                break;
+            default:
+                Log.i("ERROR","NO SUCH OPTION");
+
+        }
+
+    }
+
+    public boolean isOperationLast = false;
+
+    public void pressButton(View view) {
         Button pressedButton = (Button) view;
+        Log.i("Button pressed:", pressedButton.getTag().toString());
         String pressedButtonTag = "";
-        pressedButtonTag = pressedButton.getText().toString();
+        pressedButtonTag = pressedButton.getTag().toString();
 
         if (isNumber(pressedButtonTag)) {
 
+            if(isOperationLast){
+                resultMemory.delete(0,resultMemory.length());
+                if(operationMemory.length() > operationMemoryToClear){
+                    operationMemory.delete(operationMemory.length()-operationMemoryToClear,operationMemory.length());
+                }
+                operationMemoryToClear = 0;
+                isOperationLast = false;
+            }
+
+
             if (resultMemory.length() > 0) {
                 if (!(pressedButtonTag.equals("0") && resultMemory.charAt(resultMemory.length() - 1) == '0' && resultMemory.length() == 1)) {
-                    String temp= resultMemory+pressedButtonTag;
-                    resultMemory=temp;
-                    Log.i("result memory:", resultMemory);
+                    resultMemory.append(pressedButtonTag);
                     updateResultTextView();
                 }
             } else {
 
-                String temp= resultMemory+pressedButtonTag;
-                resultMemory=temp;
+                resultMemory.append(pressedButtonTag);
                 updateResultTextView();
-                Log.i("result memory:", resultMemory);
 
             }
-            tempMemory = tempMemory + pressedButtonTag;
+
+
+        }
+
+        if(isOperation(pressedButton.getText().toString())){
+
+            isOperationLast = true;
+
+            setRegisters();
+
+            functionClicked(pressedButton.getText().toString());
 
         }
 
         if (operationMemory.length() == 0 && resultMemory.length() == 0 && isSign(pressedButtonTag)) {
 
-            String temp= resultMemory+"0"+" ";
-            resultMemory=temp;
+            resultMemory.append("0").append(" ");
 
         }
 
         if (isSign(pressedButtonTag)) {
 
+            isOperationLast = false;
+            updateAfterOperation = true;
+
             setRegisters();
 
             computeResult();
-            operator = pressedButtonTag;
 
             setOperator(pressedButtonTag);
-            Log.i("result memory:", resultMemory);
-            Log.i("operacja",operationMemory);
 
             if (rej1.length() != 0 && rej2.length() != 0) {
                 updateResultTextViewWithResult();
@@ -338,57 +679,129 @@ public class Advanced extends AppCompatActivity {
 
 
             if (resultMemory.length() != 0) {
-
-                String temp= operationMemory+resultMemory+" ";
-                operationMemory=temp;
-                resultMemory="";
+                operationMemory.append(resultMemory).append(" ");
+                resultMemory.delete(0, resultMemory.length());
             }
 
             if (operationMemory.length() != 0 && !isSign(String.valueOf(operationMemory.charAt(operationMemory.length() - 2)))) {
-                String temp= operationMemory+pressedButtonTag+" ";
-                operationMemory=temp;
-                operationMemory=resultMemory+" "+pressedButtonTag;
-                Log.i("operation memory: ",resultMemory);
+                operationMemory.append(pressedButtonTag).append(" ");
             }
 
             if (operationMemory.length() != 0 && isSign(String.valueOf(operationMemory.charAt(operationMemory.length() - 2)))) {
-                operationMemory.substring(operationMemory.length() - 2);
-                String temp= operationMemory+pressedButtonTag+" ";
-                operationMemory=temp;
-
-                updateResultTextView(tempMemory);
-                tempMemory = "";
-
+                operationMemory.delete(operationMemory.length() - 2, operationMemory.length());
+                operationMemory.append(pressedButtonTag).append(" ");
             }
 
-            tempMemory = tempMemory + " " + pressedButtonTag;
-
-
         }
+        updateMemoryTextView();
 
-        Log.i("MEMOERY:",tempMemory);
-        //updateResultTextView();
-        Log.i("Memory:",resultMemory + " " + operator);
-        updateResultTextView(tempMemory);
 
     }
+
     private void updateMemoryTextView() {
-   operationMemory=operationMemoryTextView;
+        if (operationMemory.length() < 22) {
+            operationMemoryTextView.setText(operationMemory);
+        } else {
+            operationMemoryTextView.setText(operationMemory.substring(operationMemory.length() - 22));
+        }
     }
 
     private void updateMemoryTextView(String operationMemory) {
-        operationMemory=operationMemoryTextView;
+        if (operationMemory.length() < 22) {
+            operationMemoryTextView.setText(operationMemory);
+        } else {
+            operationMemoryTextView.setText(operationMemory.substring(operationMemory.length() - 22));
+        }
     }
+
+    private void updateResultTextViewWithResult() {
+
+        String mainResultSting = "";
+
+        try {
+            Integer mainResultInteger = Integer.parseInt(mainResult.toString());
+            mainResultSting = mainResultInteger.toString();
+        } catch (Exception e) {
+            Log.i("ERROR", "I CAN'T PARSE TO INT");
+            if(mainResult == 0 && rej1.length()!=0){
+                mainResult = Double.valueOf(rej1);
+            }
+            mainResultSting = mainResult.toString();
+            if (mainResultSting.length() > 11) {
+                mainResultSting = mainResultSting.substring(0, 11);
+            }
+        } finally {
+            if (mainResultSting.length() < 11) {
+                resultTextView.setText(mainResultSting);
+            } else {
+                resultTextView.setText(mainResultSting.substring(mainResultSting.length() - 11));
+            }
+        }
+
+    }
+
+    private void updateResultTextView() {
+        if (resultMemory.length() < 11) {
+            resultTextView.setText(resultMemory);
+        } else {
+            resultTextView.setText(resultMemory.substring(0,12));
+        }
+    }
+
+    private void updateResultTextView(String resultMemory) {
+        if (resultMemory.length() < 11) {
+            resultTextView.setText(resultMemory);
+        } else {
+            resultTextView.setText(resultMemory.substring(resultMemory.length() - 11));
+        }
+    }
+
+    int clickCounter = 0;
+
+    public void doubleClick(View view) {
+
+        clickCounter++;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (clickCounter == 1) {
+                    if (resultMemory.length() > 0) {
+                        resultMemory = resultMemory.delete(resultMemory.length() - 1, resultMemory.length());
+                        updateResultTextView();
+                    }
+                } else if (clickCounter == 2) {
+                    resultMemory = resultMemory.delete(0, resultMemory.length());
+                    updateResultTextView();
+                }
+                clickCounter = 0;
+            }
+        }, 500);
+
+
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_advanced);
+
+        resultTextView = findViewById(R.id.screen);
+    }
+
     @Override
     protected void onSaveInstanceState(Bundle outState){
 
-        outState.putString("resultMemory",resultMemory);
-        outState.putString("operationMemory",operationMemory);
+        outState.putString("resultMemory",resultMemory.toString());
+        outState.putString("operationMemory",operationMemory.toString());
         outState.putString("rej1",rej1);
-        outState.putString("rejtemp",rejtemp);
         outState.putString("rej2",rej2);
         outState.putDouble("result",mainResult);
         outState.putString("operator",operator);
+        outState.putBoolean("isOperationLast",isOperationLast);
+        outState.putBoolean("updateAfterOperation",updateAfterOperation);
 
         super.onSaveInstanceState(outState);
     }
@@ -401,17 +814,12 @@ public class Advanced extends AppCompatActivity {
         String operation = savedInstanceState.getString("operationMemory");
 
         String rej1Temp = savedInstanceState.getString("rej1");
-        String rejtempTemp = savedInstanceState.getString("rejtemp");
         String rej2Temp = savedInstanceState.getString("rej2");
         Double mainResultTemp = savedInstanceState.getDouble("result");
         String operatorTemp = savedInstanceState.getString("operator");
 
         if(rej1Temp != null) {
             rej1 = rej1Temp;
-        }
-
-        if(rejtempTemp != null) {
-            rejtemp = rejtempTemp;
         }
 
         if(rej2Temp != null){
@@ -429,19 +837,14 @@ public class Advanced extends AppCompatActivity {
 
         if(result != null){
             updateResultTextView(result);
-            String temp= resultMemory+result;
-            resultMemory=temp;
-
+            resultMemory.append(result);
         }
 
         if (operation != null){
             updateMemoryTextView(operation);
-            String temp= operationMemory+result;
-            operationMemory=temp;
+            operationMemory.append(result);
         }
 
     }
 
 }
-
-
