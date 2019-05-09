@@ -227,7 +227,6 @@ public class Advanced extends AppCompatActivity {
                 resultMemory.delete(0, 1);
             } else {
                 String tempResultMemory = resultMemory.toString();
-                Toast.makeText(Advanced.this, tempResultMemory.toString(), Toast.LENGTH_LONG).show();
                 resultMemory.delete(0, resultMemory.length());
                 resultMemory.append("-").append(tempResultMemory);
                 Log.i("result memory after", resultMemory.toString());
@@ -312,6 +311,12 @@ public class Advanced extends AppCompatActivity {
         Log.i("temp",temp.toString());
 
         Double result = Math.sqrt(temp);
+        if(result==0.0){
+            rej1="0";
+            rej2="0";
+            operator="";
+            mainResult=0.0;
+        }
 
         Log.i("result",result.toString());
         if(rej1.length() == 0){
@@ -695,10 +700,12 @@ public class Advanced extends AppCompatActivity {
 
 
     }
-
     private void updateMemoryTextView() {
         if (operationMemory.length() < 22) {
-            screen.setText((operationMemory.toString()+resultMemory));
+            if(isOperationLast){
+                screen.setText(resultMemory);
+            }else{
+            screen.setText((operationMemory.toString()+resultMemory));}
         } else {
             screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
@@ -754,7 +761,6 @@ public class Advanced extends AppCompatActivity {
         }
     }
 
-    int clickCounter = 0;
 
     public void CClick(View view) {
 
