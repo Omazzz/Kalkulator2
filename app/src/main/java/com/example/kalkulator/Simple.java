@@ -279,10 +279,11 @@ public class Simple extends AppCompatActivity {
         UpdateMemoryTextWithOperation();
 
     }
-
+String temp="";
     private void UpdateMemoryTextWithOperation() {
         if (operationMemory.length() < 22) {
             screen.setText((operationMemory.toString()+resultMemory));
+            temp= (operationMemory.toString()+resultMemory);
         } else {
             screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
@@ -291,6 +292,7 @@ public class Simple extends AppCompatActivity {
     private void UpdateMemoryTextWithOperation(String operationMemory) {
         if (operationMemory.length() < 22) {
             screen.setText((operationMemory.toString()+resultMemory));
+            temp= (operationMemory.toString()+resultMemory);
         } else {
             screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
@@ -353,6 +355,7 @@ public class Simple extends AppCompatActivity {
         outState.putString("number2", number2);
         outState.putDouble("result",mainResult);
         outState.putString("operator",operator);
+        outState.putString("temp",temp);
 
         super.onSaveInstanceState(outState);
     }
@@ -368,6 +371,7 @@ public class Simple extends AppCompatActivity {
         String rej2Temp = savedInstanceState.getString("number2");
         Double mainResultTemp = savedInstanceState.getDouble("result");
         String operatorTemp = savedInstanceState.getString("operator");
+        String temp2=savedInstanceState.getString("temp");
 
         if(rej1Temp != null) {
             number1 = rej1Temp;
@@ -394,6 +398,9 @@ public class Simple extends AppCompatActivity {
         if (operation != null){
             UpdateMemoryTextWithOperation(operation);
             operationMemory.append(result);
+        }
+        if(temp2 != null) {
+            updateResultTextView(temp2);
         }
 
     }

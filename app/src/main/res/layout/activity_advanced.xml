@@ -114,7 +114,7 @@
         android:layout_row="4"
         android:layout_columnWeight="1"
         android:layout_rowWeight="1"
-        android:text="@string/buttonPotega"
+        android:text="^"
         android:onClick="pressButton"/>
     <Button
         android:id="@+id/btn_operation_log"

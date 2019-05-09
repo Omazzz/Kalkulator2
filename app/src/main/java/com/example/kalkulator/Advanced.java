@@ -14,7 +14,7 @@ public class Advanced extends AppCompatActivity {
     StringBuilder operationMemory = new StringBuilder();
 
     private boolean isSign(String sign) {
-        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/") || sign.contains("^")) {
+        if (sign.equals("+") || sign.equals("-") || sign.equals("*") || sign.equals("/") || sign.equals("^")) {
             return true;
         }
         return false;
@@ -706,6 +706,7 @@ public class Advanced extends AppCompatActivity {
                 screen.setText(resultMemory);
             }else{
             screen.setText((operationMemory.toString()+resultMemory));}
+            temp= (operationMemory.toString()+resultMemory);
         } else {
             screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
@@ -714,6 +715,7 @@ public class Advanced extends AppCompatActivity {
     private void updateMemoryTextView(String operationMemory) {
         if (operationMemory.length() < 22) {
             screen.setText((operationMemory.toString()+resultMemory));
+            temp= (operationMemory.toString()+resultMemory);
         } else {
             screen.setText(operationMemory.substring(operationMemory.length() - 22));
         }
@@ -778,7 +780,7 @@ public class Advanced extends AppCompatActivity {
 
         screen = findViewById(R.id.screen);
     }
-
+String temp="";
     @Override
     protected void onSaveInstanceState(Bundle outState){
 
@@ -790,6 +792,7 @@ public class Advanced extends AppCompatActivity {
         outState.putString("operator",operator);
         outState.putBoolean("isOperationLast",isOperationLast);
         outState.putBoolean("updateAfterOperation",updateAfterOperation);
+        outState.putString("temp",temp);
 
         super.onSaveInstanceState(outState);
     }
@@ -805,6 +808,7 @@ public class Advanced extends AppCompatActivity {
         String rej2Temp = savedInstanceState.getString("rej2");
         Double mainResultTemp = savedInstanceState.getDouble("result");
         String operatorTemp = savedInstanceState.getString("operator");
+        String temp2=savedInstanceState.getString("temp");
 
         if(rej1Temp != null) {
             rej1 = rej1Temp;
@@ -831,6 +835,9 @@ public class Advanced extends AppCompatActivity {
         if (operation != null){
             updateMemoryTextView(operation);
             operationMemory.append(result);
+        }
+        if(temp2 != null) {
+            updateResultTextView(temp2);
         }
 
     }
